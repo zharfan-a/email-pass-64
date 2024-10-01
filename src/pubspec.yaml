@@ -1,6 +1,6 @@
-name: com.example.simple_app
-description: A simple Flutter application with login and home screens. The app uses the Cubit pattern for state management.
-version: 1.0.0+1
+name: simple_app
+description: A simple Flutter application with login and home screens. The app uses the Cubit pattern for state management. Now includes error handling for invalid login credentials.
+version: 1.0.0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
