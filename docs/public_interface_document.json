@@ -1,7 +1,7 @@
 {
   "package_name": "com.example.simple_app",
-  "project_description": "A simple Flutter application with login and home screens. The app uses the Cubit pattern for state management.",
-  "architecture_overview": "The application follows a layered architecture with separation of concerns. It includes separate folders for screens, cubits, models, and widgets. State management is handled using the Cubit pattern.",
+  "project_description": "A simple Flutter application with login and home screens. The app uses the Cubit pattern for state management. Now includes error handling for invalid login credentials.",
+  "architecture_overview": "The application follows a layered architecture with separation of concerns. It includes separate folders for screens, cubits, models, and widgets. State management is handled using the Cubit pattern. Error handling for invalid login credentials has been added.",
   "folder_structure": {
     "lib": {
       "main.dart": {},
@@ -97,7 +97,7 @@
       "methods": [
         {
           "name": "login",
-          "description": "Logs in the user with the provided email and password.",
+          "description": "Logs in the user with the provided email and password. Emits AuthError state if credentials are invalid.",
           "parameters": [
             "String email",
             "String password"
@@ -119,7 +119,7 @@
     {
       "name": "lib/cubits/auth_state.dart",
       "description": "Defines the different states for authentication.",
-      "class_diagram": "@startuml\nclass AuthState {}\nclass AuthInitial extends AuthState {}\nclass AuthLoading extends AuthState {}\nclass Authenticated extends AuthState {}\nclass Unauthenticated extends AuthState {}\n@enduml",
+      "class_diagram": "@startuml\nclass AuthState {}\nclass AuthInitial extends AuthState {}\nclass AuthLoading extends AuthState {}\nclass Authenticated extends AuthState {}\nclass Unauthenticated extends AuthState {}\nclass AuthError extends AuthState {\n  +String message\n  +AuthError(this.message)\n}\n@enduml",
       "methods": [],
       "dependencies": [
         "package:equatable/equatable.dart"
@@ -245,7 +245,7 @@
       "methods": [
         {
           "name": "login",
-          "description": "Logs in the user with the provided email and password.",
+          "description": "Logs in the user with the provided email and password. Emits AuthError state if credentials are invalid.",
           "parameters": [
             "String email",
             "String password"
@@ -300,9 +300,9 @@
       "purpose": "Mocking library for Dart."
     }
   ],
-  "sequence_diagram": "@startuml\nactor User\nUser -> LoginScreen: open\nLoginScreen -> AuthCubit: login(email, password)\nAuthCubit -> AuthState: emit(AuthLoading)\nAuthCubit -> AuthState: emit(Authenticated)\nAuthState -> HomeScreen: navigate\nUser -> HomeScreen: view\nHomeScreen -> AuthCubit: logout\nAuthCubit -> AuthState: emit(Unauthenticated)\nAuthState -> LoginScreen: navigate\n@enduml",
-  "state_management_flow": "State is managed using the Cubit pattern. The AuthCubit manages authentication states such as AuthInitial, AuthLoading, Authenticated, and Unauthenticated. The UI listens to state changes and updates accordingly.",
-  "navigation_flow": "The app starts with the LoginScreen. Upon successful login, the user is navigated to the HomeScreen. On logout, the user is navigated back to the LoginScreen.",
+  "sequence_diagram": "@startuml\nactor User\nUser -> LoginScreen: open\nLoginScreen -> AuthCubit: login(email, password)\nAuthCubit -> AuthState: emit(AuthLoading)\nAuthCubit -> AuthState: emit(Authenticated)\nAuthCubit -> AuthState: emit(AuthError)\nAuthState -> LoginScreen: display error\nAuthState -> HomeScreen: navigate\nUser -> HomeScreen: view\nHomeScreen -> AuthCubit: logout\nAuthCubit -> AuthState: emit(Unauthenticated)\nAuthState -> LoginScreen: navigate\n@enduml",
+  "state_management_flow": "State is managed using the Cubit pattern. The AuthCubit manages authentication states such as AuthInitial, AuthLoading, Authenticated, Unauthenticated, and AuthError. The UI listens to state changes and updates accordingly.",
+  "navigation_flow": "The app starts with the LoginScreen. Upon successful login, the user is navigated to the HomeScreen. On logout, the user is navigated back to the LoginScreen. If login credentials are invalid, an error message is displayed on the LoginScreen.",
   "pubspec_yaml": {
     "name": "simple_app",
     "description": "A simple Flutter application with login and home screens.",
