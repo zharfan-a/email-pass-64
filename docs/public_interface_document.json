@@ -39,9 +39,11 @@
       ],
       "dependencies": [
         "package:flutter/material.dart",
+        "package:flutter_bloc/flutter_bloc.dart",
+        "cubits/auth_cubit.dart",
         "screens/login_screen.dart",
         "screens/home_screen.dart",
-        "cubits/auth_cubit.dart"
+        "cubits/auth_state.dart"
       ]
     },
     {
@@ -60,8 +62,11 @@
       ],
       "dependencies": [
         "package:flutter/material.dart",
-        "widgets/login_form.dart",
-        "cubits/auth_cubit.dart"
+        "package:flutter_bloc/flutter_bloc.dart",
+        "../cubits/auth_cubit.dart",
+        "../cubits/auth_state.dart",
+        "../widgets/login_form.dart",
+        "home_screen.dart"
       ]
     },
     {
@@ -80,8 +85,9 @@
       ],
       "dependencies": [
         "package:flutter/material.dart",
-        "widgets/home_content.dart",
-        "cubits/auth_cubit.dart"
+        "package:flutter_bloc/flutter_bloc.dart",
+        "../widgets/home_content.dart",
+        "../cubits/auth_cubit.dart"
       ]
     },
     {
@@ -115,14 +121,48 @@
       "description": "Defines the different states for authentication.",
       "class_diagram": "@startuml\nclass AuthState {}\nclass AuthInitial extends AuthState {}\nclass AuthLoading extends AuthState {}\nclass Authenticated extends AuthState {}\nclass Unauthenticated extends AuthState {}\n@enduml",
       "methods": [],
-      "dependencies": []
+      "dependencies": [
+        "package:equatable/equatable.dart"
+      ]
     },
     {
       "name": "lib/models/user.dart",
       "description": "Defines the User model.",
-      "class_diagram": "@startuml\nclass User {\n  +String email\n  +String name\n}\n@enduml",
-      "methods": [],
-      "dependencies": []
+      "class_diagram": "@startuml\nclass User {\n  +String email\n  +String name\n  +User.fromJson(Map<String, dynamic> json)\n  +Map<String, dynamic> toJson()\n  +List<Object?> get props\n}\n@enduml",
+      "methods": [
+        {
+          "name": "User",
+          "description": "Constructor to initialize the User with a name and email.",
+          "parameters": [
+            "String email",
+            "String name"
+          ],
+          "return_type": null
+        },
+        {
+          "name": "User.fromJson",
+          "description": "Factory constructor to create a User instance from a JSON map.",
+          "parameters": [
+            "Map<String, dynamic> json"
+          ],
+          "return_type": "User"
+        },
+        {
+          "name": "toJson",
+          "description": "Method to convert the User instance to a JSON map.",
+          "parameters": [],
+          "return_type": "Map<String, dynamic>"
+        },
+        {
+          "name": "props",
+          "description": "Override the == operator and hashCode using the Equatable mixin.",
+          "parameters": [],
+          "return_type": "List<Object?>"
+        }
+      ],
+      "dependencies": [
+        "package:equatable/equatable.dart"
+      ]
     },
     {
       "name": "lib/widgets/login_form.dart",
@@ -134,11 +174,20 @@
           "description": "Creates the mutable state for this widget.",
           "parameters": null,
           "return_type": "State<LoginForm>"
+        },
+        {
+          "name": "build",
+          "description": "Builds the widget tree for the login form.",
+          "parameters": [
+            "BuildContext context"
+          ],
+          "return_type": "Widget"
         }
       ],
       "dependencies": [
         "package:flutter/material.dart",
-        "cubits/auth_cubit.dart"
+        "package:flutter_bloc/flutter_bloc.dart",
+        "../cubits/auth_cubit.dart"
       ]
     },
     {
@@ -157,7 +206,8 @@
       ],
       "dependencies": [
         "package:flutter/material.dart",
-        "cubits/auth_cubit.dart"
+        "package:flutter_bloc/flutter_bloc.dart",
+        "../cubits/auth_cubit.dart"
       ]
     }
   ],
